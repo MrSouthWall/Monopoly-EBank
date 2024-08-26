@@ -10,52 +10,134 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    @Query(sort: \Player.order) private var players: [Player]
+    
+    // 选中的玩家
+    @State private var aPlayer: [Player] = []
+    @State private var bPlayer: [Player] = []
+    
+    // 是否反向交易
+    @State private var isReverse = false
+    // 是否显示页面
+    @State private var isShowSetting = false
+    
+    // 破产提示
+    @State private var isGoBroke = false
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        NavigationStack {
+            VStack {
+                selectPlayer()
+                
+                Spacer()
+                
+                NumberKeyboardView(aPlayer: $aPlayer, bPlayer: $bPlayer, isReverse: isReverse, isGoBroke: $isGoBroke)
             }
+            .navigationTitle("桌游电子银行")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                Button("设置", systemImage: "gear") {
+                    isShowSetting = true
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                .sheet(isPresented: $isShowSetting, content: {
+                    PlayerListScreen()
+                })
+            }
+            .alert("玩家“\(aPlayer.first?.name ?? "None")”已破产！", isPresented: $isGoBroke) {
+                Button("Ok") { }
+            }
+        }
+    }
+    
+    // MARK: Func
+    
+    // 玩家选择器
+    func selectPlayer() -> some View {
+        
+        ZStack {
+            RoundedRectangle(cornerRadius: 25.0, style: .continuous)
+                .foregroundStyle(.gray.opacity(0.2))
+            
+            HStack {
+                // 已选择的A玩家
+                NavigationLink {
+                    SelectPlayerScreen(aPlayer: $aPlayer, bPlayer: $bPlayer, isReverse: $isReverse)
+                        .onAppear(perform: {
+                            aPlayer.removeAll()
+                            bPlayer.removeAll()
+                        })
+                } label: {
+                    playerButton(player: "A")
+                }
+                
+                Spacer()
+                
+                Button {
+                    isReverse.toggle()
+                } label: {
+                    Image(systemName: isReverse ? "arrow.left" : "arrow.right")
+                        .font(.title.bold())
+                        .foregroundStyle(.black)
+                }
+                
+                Spacer()
+                
+                // 已选择的B玩家
+                NavigationLink {
+                    SelectPlayerScreen(aPlayer: $aPlayer, bPlayer: $bPlayer, isReverse: $isReverse)
+                        .onAppear(perform: {
+                            aPlayer.removeAll()
+                            bPlayer.removeAll()
+                        })
+                } label: {
+                    playerButton(player: "B")
+                }
+            }
+        }
+        .frame(maxHeight: 130)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal)
+    }
+    
+    // 玩家按钮
+    @ViewBuilder func playerButton(player: String) -> some View {
+        switch player {
+        case "A":
+            ZStack {
+                RoundedRectangle(cornerRadius: 20.0, style: .continuous)
+                    .foregroundStyle(.white)
+                    .frame(width: 100, height: 100)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 20.0, style: .continuous)
+                            .stroke(!isReverse ? .green : .red, lineWidth: 5.0)
                     }
-                }
+                
+                PlayerButtonView(player: aPlayer.first ?? Player(order: 1, name: "选择玩家", money: 0.0))
+                    .foregroundStyle(aPlayer.first != nil ? .black : .gray.opacity(0.5))
             }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+            .padding(.leading, 15)
+            
+        case "B":
+            ZStack {
+                RoundedRectangle(cornerRadius: 25.0, style: .continuous)
+                    .foregroundStyle(.white)
+                    .frame(width: 100, height: 100)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 20.0, style: .continuous)
+                            .stroke(!isReverse ? .red : .green, lineWidth: 5.0)
+                    }
+                
+                PlayerButtonView(player: bPlayer.first ?? Player(order: 1, name: "选择玩家", money: 0.0))
+                    .foregroundStyle(bPlayer.first != nil ? .black : .gray.opacity(0.5))
             }
+            .padding(.trailing, 15)
+            
+        default:
+            Text("玩家选择错误！")
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Player.self, inMemory: true)
 }
