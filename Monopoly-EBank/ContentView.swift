@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Player.order) private var players: [Player]
+    @Query(sort: \TradingHistory.creationTime, order: .reverse) private var tradingHistorys: [TradingHistory]
     
     // 选中的玩家
     @State private var aPlayer: [Player] = []
@@ -32,29 +33,48 @@ struct ContentView: View {
                 
                 Spacer()
                 
+                tradingHistory()
+                
+                Spacer()
+                
                 NumberKeyboardView(aPlayer: $aPlayer, bPlayer: $bPlayer, isReverse: isReverse, isGoBroke: $isGoBroke)
             }
-            .navigationTitle("桌游电子银行")
+            .navigationTitle("大富翁电子银行")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("玩家列表", systemImage: "list.bullet") {
-                        isShowPlayList = true
-                    }
-                    .sheet(isPresented: $isShowPlayList, content: {
-                        PlayerListScreen()
-                    })
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("设置", systemImage: "gear") {
+                    Button("重置游戏", systemImage: "gear") {
                         isShowSetting = true
                     }
                     .sheet(isPresented: $isShowSetting, content: {
                         SettingScreen()
                     })
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("添加玩家", systemImage: "plus") {
+                        isShowPlayList = true
+                    }
+                    .sheet(isPresented: $isShowPlayList, content: {
+                        PlayerListScreen()
+                    })
+                }
             }
             .alert("玩家“\(aPlayer.first?.name ?? "None")”已破产！", isPresented: $isGoBroke) {
                 Button("Ok") { }
+            }
+        }
+        .onAppear {
+            if players.isEmpty {
+                do {
+                    try modelContext.delete(model: Player.self)
+                    try modelContext.delete(model: TradingHistory.self)
+                    let bank = Player(order: 0, name: "银行", money: 10000000000)
+                    modelContext.insert(bank)
+                    print("游戏首次启动，已完成银行初始化！")
+                } catch {
+                    print("删除全部数据出错")
+                }
+            } else {
+                print("游戏内已有银行，不进行初始化！")
             }
         }
     }
@@ -65,9 +85,11 @@ struct ContentView: View {
     func selectPlayer() -> some View {
         
         ZStack {
-            RoundedRectangle(cornerRadius: 25.0, style: .continuous)
-                .foregroundStyle(.gray.opacity(0.2))
-            
+            /* 弃用的样式
+             RoundedRectangle(cornerRadius: 25.0, style: .continuous)
+                 .foregroundStyle(.gray.opacity(0.2))
+             */
+
             HStack {
                 // 已选择的A玩家
                 NavigationLink {
@@ -107,9 +129,10 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(maxHeight: 130)
+//        .frame(maxHeight: 130)
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
+        .padding(.vertical, 5)
     }
     
     // 玩家按钮
@@ -148,6 +171,30 @@ struct ContentView: View {
         default:
             Text("玩家选择错误！")
         }
+    }
+    
+    /// 交易历史记录视图
+    func tradingHistory() -> some View {
+        List {
+            ForEach(tradingHistorys) { item in
+                let transactionAmount = MoneyHelperFunc.formatDecimalToString(item.transactionAmount)
+                HStack {
+                    Text(item.creationTime.formatted(date: .omitted, time: .standard))
+                        .frame(alignment: .leading)
+                    Text(item.payoutPlayerName)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    Image(systemName: "arrow.right")
+                        .bold()
+                        .frame(maxWidth: 25, alignment: .center)
+                    Text(item.incomePlayerName)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("\(transactionAmount) 元")
+                        .frame(alignment: .trailing)
+                }
+            }
+        }
+        .listStyle(.plain)
+        .padding(.bottom, 5)
     }
 }
 

@@ -194,7 +194,14 @@ struct NumberKeyboardView: View {
                             aPlayer.first!.isGoBroke = true
                             isGoBroke = true
                         }
-                        enterText = ""
+                    }
+                    // 添加交易记录
+                    let newTradingHistory = TradingHistory(creationTime: .now, payoutPlayerName: aPlayer.first!.name, incomePlayerName: bPlayer.first!.name, transactionAmount: transactionAmount)
+                    modelContext.insert(newTradingHistory)
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("保存交易历史记录出错")
                     }
                 case true:
                     // 检测支出玩家是否有钱
@@ -208,10 +215,17 @@ struct NumberKeyboardView: View {
                             bPlayer.first!.isGoBroke = true
                             isGoBroke = true
                         }
-                        enterText = ""
+                    }
+                    // 添加交易记录
+                    let newTradingHistory = TradingHistory(creationTime: .now, payoutPlayerName: bPlayer.first!.name, incomePlayerName: aPlayer.first!.name, transactionAmount: transactionAmount)
+                    modelContext.insert(newTradingHistory)
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("保存交易历史记录出错")
                     }
                 }
-                
+                enterText = ""
                 return
             }
         } label: {

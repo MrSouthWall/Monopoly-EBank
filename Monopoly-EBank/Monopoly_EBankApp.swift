@@ -13,6 +13,7 @@ struct Monopoly_EBankApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Player.self,
+            TradingHistory.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
