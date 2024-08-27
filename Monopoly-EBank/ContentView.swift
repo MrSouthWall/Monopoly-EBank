@@ -85,11 +85,6 @@ struct ContentView: View {
     func selectPlayer() -> some View {
         
         ZStack {
-            /* 弃用的样式
-             RoundedRectangle(cornerRadius: 25.0, style: .continuous)
-                 .foregroundStyle(.gray.opacity(0.2))
-             */
-
             HStack {
                 // 已选择的A玩家
                 NavigationLink {
@@ -129,7 +124,6 @@ struct ContentView: View {
                 }
             }
         }
-//        .frame(maxHeight: 130)
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
         .padding(.vertical, 5)
