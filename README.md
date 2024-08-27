@@ -1,3 +1,4 @@
+
 <p align="center">
   <img height="200" src="https://raw.githubusercontent.com/MrSouthWall/Monopoly-EBank/main/README_Assets/MonopolyLogo-Light-RoundedShadow.png">
 </p>
@@ -12,19 +13,20 @@
   <a href="https://developer.apple.com/swift/"><img alt="Static Badge" src="https://img.shields.io/badge/Language-Swift-F05138?logo=swift&logoColor=F05138"></a>
   <a href="https://developer.apple.com/cn/xcode/swiftui/"><img alt="Static Badge" src="https://img.shields.io/badge/UIFramework-SwiftUI-0062D4?logo=swift&logoColor=0062D4"></a>
   <a href="https://developer.apple.com/xcode/swiftdata/"><img alt="Static Badge" src="https://img.shields.io/badge/DataStorage-SwiftData-6F8C9C?logo=swift&logoColor=6F8C9C"></a>
+  <a href="https://www.apple.com/ios/ios-17/"><img alt="Static Badge" src="https://img.shields.io/badge/Available-iOS 17+-green?logo=apple&logoColor=green"></a>
 </p>
 
 ## 关于作者和本项目
 
-大家好，我是 MrSouthWall 南墙先生，是一名 iOS 开发新手。
+大家好，我是 MrSouthWall 南墙先生。
 
-这是我的一个练手项目，起源于前段时间沉迷桌游大富翁，但每次数纸钞又烦又累，后来买了有实体电子银行的版本，但仍然无法愉快地玩耍，电子银行在快速插拔银行卡时，还会偶现一些错误。
+这个项目，起源于前段时间沉迷桌游大富翁，但每次数纸钞又烦又累，后来买了有实体电子银行的版本，但仍然无法愉快地玩耍，电子银行在快速插拔银行卡时，还会偶现一些错误。
 
 当时就在想，为什么不能把电子银行带到手机上呢？
 
-心动不如行动，于是就有了这个项目，一开始的设想是希望使用 iPad 进行操作，并且直接在 iPad 上抽取机会和命运，还有直接拖拽交易双方的头像，快速完成交易。但这些对于我这样一名 iOS 开发新手而言，技术力还不够，于是便暂时开发这样一个简易 App。
+心动不如行动，于是就有了这个项目，后续的设想是开发 iPad 版本，并且直接在 iPad 上抽取机会和命运，还有直接拖拽交易双方的头像，快速完成交易，等待时间去开发。
 
-App 现已可以正常游玩，作者本人已经用它游玩多局，交易速度极快，体验甚好，欢迎大家一起体验。
+不过 App 现已可以正常游玩，我已经用它游玩多局，交易速度极快，体验甚好，欢迎大家一起体验。
 
 （但大富翁的灵魂会不会就是在于数纸钞呢？）
 
