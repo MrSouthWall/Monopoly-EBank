@@ -85,9 +85,12 @@ struct ContentView: View {
                 Button {
                     isReverse.toggle()
                 } label: {
-                    Image(systemName: isReverse ? "arrow.left" : "arrow.right")
-                        .font(.title.bold())
-                        .foregroundStyle(.black)
+                    withAnimation {
+                        Image(systemName: "arrow.right")
+                            .rotationEffect(isReverse ? .degrees(-180) : .degrees(0))
+                            .font(.title.bold())
+                            .foregroundStyle(Color(uiColor: .label))
+                    }
                 }
                 
                 Spacer()
