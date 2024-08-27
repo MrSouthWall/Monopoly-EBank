@@ -115,7 +115,7 @@ struct ContentView: View {
         case "A":
             ZStack {
                 RoundedRectangle(cornerRadius: 20.0, style: .continuous)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.background)
                     .frame(width: 100, height: 100)
                     .overlay {
                         RoundedRectangle(cornerRadius: 20.0, style: .continuous)
@@ -123,14 +123,14 @@ struct ContentView: View {
                     }
                 
                 PlayerButtonView(player: aPlayer.first ?? Player(order: 1, name: "选择玩家", money: 0.0))
-                    .foregroundStyle(aPlayer.first != nil ? .black : .gray.opacity(0.5))
+                    .foregroundStyle(aPlayer.first != nil ? Color(uiColor: .label) : .gray.opacity(0.5))
             }
             .padding(.leading, 15)
             
         case "B":
             ZStack {
                 RoundedRectangle(cornerRadius: 25.0, style: .continuous)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.background)
                     .frame(width: 100, height: 100)
                     .overlay {
                         RoundedRectangle(cornerRadius: 20.0, style: .continuous)
@@ -138,7 +138,7 @@ struct ContentView: View {
                     }
                 
                 PlayerButtonView(player: bPlayer.first ?? Player(order: 1, name: "选择玩家", money: 0.0))
-                    .foregroundStyle(bPlayer.first != nil ? .black : .gray.opacity(0.5))
+                    .foregroundStyle(bPlayer.first != nil ? Color(uiColor: .label) : .gray.opacity(0.5))
             }
             .padding(.trailing, 15)
             

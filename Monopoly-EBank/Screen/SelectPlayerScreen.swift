@@ -127,7 +127,7 @@ struct CardView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25.0, style: .continuous)
-                .foregroundStyle(.white)
+                .foregroundStyle(.background)
                 .overlay {
                     RoundedRectangle(cornerRadius: 25.0, style: .continuous)
                         .stroke(strokeColor(), lineWidth: 5)
