@@ -20,6 +20,7 @@ struct ContentView: View {
     @State private var isReverse = false
     // 是否显示页面
     @State private var isShowSetting = false
+    @State private var isShowPlayList = false
     
     // 破产提示
     @State private var isGoBroke = false
@@ -35,12 +36,22 @@ struct ContentView: View {
             }
             .navigationTitle("桌游电子银行")
             .toolbar {
-                Button("设置", systemImage: "gear") {
-                    isShowSetting = true
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("玩家列表", systemImage: "list.bullet") {
+                        isShowPlayList = true
+                    }
+                    .sheet(isPresented: $isShowPlayList, content: {
+                        PlayerListScreen()
+                    })
                 }
-                .sheet(isPresented: $isShowSetting, content: {
-                    PlayerListScreen()
-                })
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("设置", systemImage: "gear") {
+                        isShowSetting = true
+                    }
+                    .sheet(isPresented: $isShowSetting, content: {
+                        SettingScreen()
+                    })
+                }
             }
             .alert("玩家“\(aPlayer.first?.name ?? "None")”已破产！", isPresented: $isGoBroke) {
                 Button("Ok") { }

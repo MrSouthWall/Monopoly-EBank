@@ -57,12 +57,21 @@ struct SelectPlayerScreen: View {
                     LazyVGrid(columns: columnGrid(), spacing: 27, content: {
                         ForEach(players) { player in
                             if player.order != 0 {
-                                CardView(currentPlayer: player, geometry: geometry, aPlayer: $aPlayer, bPlayer: $bPlayer, tapNumber: $tapNumber, isReverse: $isReverse, isShowGrid: $defaults.isShowGrid, isShowAlertOfGoBroke: $isShowAlertOfGoBroke)
-                                    .onChange(of: tapNumber == 2) {
-                                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3){
-                                            dismiss()
-                                        }
+                                CardView(
+                                    currentPlayer: player,
+                                    geometry: geometry,
+                                    aPlayer: $aPlayer,
+                                    bPlayer: $bPlayer,
+                                    tapNumber: $tapNumber,
+                                    isReverse: $isReverse,
+                                    isShowGrid: $defaults.isShowGrid,
+                                    isShowAlertOfGoBroke: $isShowAlertOfGoBroke
+                                )
+                                .onChange(of: tapNumber == 2) {
+                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3){
+                                        dismiss()
                                     }
+                                }
                             }
                         }
                     })

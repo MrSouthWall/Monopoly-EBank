@@ -10,5 +10,5 @@ import SwiftUI
 
 class Defaults: ObservableObject {
     // 以网格显示
-    @AppStorage("isShowGrid") public var isShowGrid: Bool = false
+    @AppStorage("isShowGrid") public var isShowGrid: Bool = true
 }

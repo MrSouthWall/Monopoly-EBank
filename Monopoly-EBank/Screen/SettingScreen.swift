@@ -10,15 +10,30 @@ import SwiftData
 
 struct SettingScreen: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @State private var isShowDeleteDataAlert = false
     
     var body: some View {
         NavigationStack {
             Form {
-                NavigationLink {
-                    PlayerListScreen()
-                } label: {
-                    Text("重新开始游戏！")
-                        .foregroundStyle(.red)
+                Section("重置") {
+                    Button("重新开始游戏", role: .destructive) {
+                        isShowDeleteDataAlert = true
+                    }
+                    .alert("是否删除全部玩家", isPresented: $isShowDeleteDataAlert) {
+                        Button("确定", role: .destructive) {
+                            do {
+                                try modelContext.delete(model: Player.self)
+                                let bank = Player(order: 0, name: "银行", money: 10000000000)
+                                modelContext.insert(bank)
+                                dismiss()
+                            } catch {
+                                print("删除全部数据出错")
+                            }
+                        }
+                    } message: {
+                        Text("此操作会删除所有的玩家数据，并重置银行！")
+                    }
                 }
             }
             .navigationTitle("设置")
