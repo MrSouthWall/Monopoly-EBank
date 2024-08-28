@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img height="200" src="https://raw.githubusercontent.com/MrSouthWall/Monopoly-EBank/main/README_Assets/MonopolyLogo-Light-RoundedShadow.png">
+  <img height="200" src="https://raw.githubusercontent.com/MrSouthWall/Monopoly-EBank/main/README-Assets/MonopolyLogo-Light-RoundedShadow.png">
 </p>
 
 <h1 align="center">大富翁电子银行</h1>
